@@ -1,0 +1,14 @@
+{
+  "name": "http2.long.push",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "http2": "3.3.6"
+  },
+  "author": "dpwspoon",
+  "license": "ISC"
+}

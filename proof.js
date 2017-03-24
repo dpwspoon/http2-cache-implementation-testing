@@ -29,6 +29,10 @@ var test2 = {
     idMapping: {}
 };
 
+function getDate(){
+    return new Date();
+}
+
 var testbase = {
     'response': function (request, response) {
         // console.log(request.url);
@@ -54,7 +58,6 @@ var testbase = {
             var pathname = parseUrl(request.url).pathname;
 
 
-            console.log(pathname);
 
             switch (pathname) {
                 // SHOULD be on H2
@@ -88,14 +91,15 @@ var testbase = {
                     } else {
                         test2.idMapping[testId]++;
                     }
-                    console.log(testId + " sent push " + test2.idMapping[testId] + " times")
+                    // console.log(testId + " sent push " + test2.idMapping[testId] + " times")
                     var body = 'success' + test2.idMapping[testId];
                     var push = response.push('/test2result_' + testId);
                     push.writeHead(200,
                         {
                             'Content-Type': 'text/html',
                             'Content-Length': body.length,
-                            'Cache-Control': 'no-store, max-age=5'
+                            'Cache-Control': 'no-store, max-age=5',
+                            'Date:' : getDate()
                         }
                     );
                     push.end(body);
@@ -104,7 +108,8 @@ var testbase = {
                     var message = 'sent push promises';
                     response.writeHead(200, {
                         'Content-Type': 'text/html',
-                        'Content-Length': message.length
+                        'Content-Length': message.length,
+                        'Date:' : getDate()
                     });
                     response.end(message);
                     break;
@@ -116,7 +121,7 @@ var testbase = {
                     } else {
                         test2.idMapping[testId]++;
                     }
-                    console.log(testId + " sent push " + test2.idMapping[testId] + " times");
+                    // console.log(testId + " sent push " + test2.idMapping[testId] + " times");
                     var body = 'success' + test2.idMapping[testId];
                     var push = response.push(
                         {
@@ -124,29 +129,32 @@ var testbase = {
                             headers: {'Cache-Control': 'no-cache'}
                         }
                     );
-                    console.log(push);
 
+                    var date = getDate();
                     push.writeHead(200,
                         {
                             'Content-Type': 'text/html',
                             'Content-Length': body.length,
-                            'Cache-Control': 'no-store, max-age=5'
+                            'Cache-Control': 'no-store, max-age=5',
+                            'Date:' : date
                         }
                     );
+                    console.log("sent push with date: " + date + " for /test3result_" + testId);
                     push.end(body);
 
                     var message = 'sent push promises';
                     response.writeHead(200, {
                         'Content-Type': 'text/html',
-                        'Content-Length': message.length
+                        'Content-Length': message.length,
+                        'Date:' : getDate()
                     });
                     response.end(message);
                     break;
                 // SHOULD support "Long Push"
                 default:
-                    console.log("got unexpected request " + pathname);
                     // test2: interesting firefox behavior
                     if (pathname.indexOf('test2result') > -1 || pathname.indexOf('test3result')) {
+                        console.log("got unexpected request indicating bug for:" + url);
                         var message = 'FAIL / BUG (Ignored PUSH PROMISES!!)';
                         response.writeHead(200, {
                             'Content-Type': 'text/html',

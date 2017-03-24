@@ -86,50 +86,57 @@
             <h3 id="test2result">pending</h3>
         </div>
         <script type="text/javascript">
-            function getRandomInt(min, max) {
-                min = Math.ceil(min);
-                max = Math.floor(max);
-                return Math.floor(Math.random() * (max - min)) + min;
-            }
+            (function () {
 
-            var myTestID = getRandomInt(0, 9999999);
+                function getRandomInt(min, max) {
+                    min = Math.ceil(min);
+                    max = Math.floor(max);
+                    return Math.floor(Math.random() * (max - min)) + min;
+                }
 
-            //start test
+                var myTestID = getRandomInt(0, 9999999);
 
-            function checkResult() {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", 'test3result_' + myTestID);
-                xhr.addEventListener("load", function () {
-                    var result = xhr.responseText;
-                    console.log("test 3 result: " + result);
-                    if (result == 'success1') {
-                        result = 'fail (it did not use second push promise)';
-                    } else if (result == 'success2') {
-                        result = 'success (it used second push promise)'
-                    }
-                    document.getElementById('test3result').innerHTML = result;
-                });
-                xhr.send();
-            }
+                //start test
 
-            function forcePush(cnt) {
-                console.log("test 3 request that should get a push: cnt: " + cnt);
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", 'test3start?id=' + myTestID);
-                xhr.addEventListener("load", function () {
-                    setTimeout(function () {
-                        if (cnt === 0) {
-                            forcePush(++cnt);
-                        } else {
-                            checkResult();
+                function checkResult() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", 'test2result_' + myTestID);
+                    xhr.addEventListener("load", function () {
+                        var result = xhr.responseText;
+                        console.log("test 2 result: " + result);
+                        if (result == 'success1') {
+                            result = 'success (it used first push promise)';
+                        } else if (result == 'success2') {
+                            result = 'fail (it did not use second push promise)';
                         }
-                    }, 100)
-                });
-                xhr.send();
-            }
-            console.log("test 3 starting");
-            forcePush(0);
+                        document.getElementById('test2result').innerHTML = result;
+                    });
+                    xhr.send();
+                }
+
+                function forcePush(cnt) {
+                    console.log("test 2 request that should get a push: cnt: " + cnt);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", 'test2start?id=' + myTestID);
+                    xhr.addEventListener("load", function () {
+                        setTimeout(function () {
+                            if (cnt === 0) {
+                                forcePush(++cnt);
+                            } else {
+                                checkResult();
+                            }
+                        }, 1000)
+                    });
+                    xhr.send();
+                }
+
+                console.log("test 2 starting");
+                forcePush(0);
+
+            })();
         </script>
+
+
     </div>
     <div class="row row-striped">
         <div class="col-sm-7">
@@ -138,6 +145,60 @@
         <div class="col-sm-5">
             <h3 id="test3result">pending</h3>
         </div>
+        <script>
+
+            (function () {
+
+                function getRandomInt(min, max) {
+                    min = Math.ceil(min);
+                    max = Math.floor(max);
+                    return Math.floor(Math.random() * (max - min)) + min;
+                }
+
+                var myTestID = getRandomInt(0, 9999999);
+
+                //start test
+
+                function checkResult() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", 'test3result_' + myTestID);
+                    xhr.addEventListener("load", function () {
+                        var result = xhr.responseText;
+                        console.log("test 3 result: " + result);
+                        if (result == 'success1') {
+                            result = 'fail (it did not use second push promise)';
+                        } else if (result == 'success2') {
+                            result = 'success (it used second push promise)'
+                        }
+                        document.getElementById('test3result').innerHTML = result;
+                    });
+                    xhr.send();
+                }
+
+                function forcePush(cnt) {
+                    console.log("test 3 request that should get a push: cnt: " + cnt);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", 'test3start?id=' + myTestID);
+                    xhr.addEventListener("load", function () {
+                        setTimeout(function () {
+                            if (cnt === 0) {
+                                forcePush(++cnt);
+                            } else {
+                                checkResult();
+                            }
+                        }, 2000)
+                    });
+                    xhr.send();
+                }
+
+                console.log("test 3 starting");
+                forcePush(0);
+
+            })();
+
+
+        </script>
+
     </div>
     <div class="row row-striped">
         <div class="col-sm-7">
