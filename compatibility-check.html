@@ -44,17 +44,19 @@
             <h3 id="test0result">pending</h3>
         </div>
         <script type="text/javascript">
-            setTimeout(function () {
-                console.log("test 0 starting");
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'test0result');
-                xhr.addEventListener("load", function () {
-                    var result = xhr.responseText;
-                    console.log("test 0 result: " + result);
-                    document.getElementById('test0result').innerHTML = result;
-                });
-                xhr.send()
-            }, 100);
+            (function () {
+                setTimeout(function () {
+                    console.log("test 0 starting");
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', 'test0result');
+                    xhr.addEventListener("load", function () {
+                        var result = xhr.responseText;
+                        console.log("test 0 result: " + result);
+                        document.getElementById('test0result').innerHTML = result;
+                    });
+                    xhr.send()
+                }, 100);
+            })();
         </script>
     </div>
     <div class="row row-striped">
@@ -65,17 +67,19 @@
             <h3 id="test1result">pending</h3>
         </div>
         <script type="text/javascript">
-            setTimeout(function () {
-                console.log("test 1 starting");
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", 'test1result');
-                xhr.addEventListener("load", function () {
-                    var result = xhr.responseText;
-                    console.log("test 1 result: " + result);
-                    document.getElementById('test1result').innerHTML = result;
-                });
-                xhr.send();
-            }, 100);
+            (function () {
+                setTimeout(function () {
+                    console.log("test 1 starting");
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", 'test1result');
+                    xhr.addEventListener("load", function () {
+                        var result = xhr.responseText;
+                        console.log("test 1 result: " + result);
+                        document.getElementById('test1result').innerHTML = result;
+                    });
+                    xhr.send();
+                }, 100);
+            })();
         </script>
     </div>
     <div class="row row-striped">
@@ -193,10 +197,7 @@
 
                 console.log("test 3 starting");
                 forcePush(0);
-
             })();
-
-
         </script>
 
     </div>
@@ -207,6 +208,55 @@
         <div class="col-sm-5">
             <h3 id="test5result">pending</h3>
         </div>
+        <script>
+            /*
+             (function () {
+             function getRandomInt(min, max) {
+             min = Math.ceil(min);
+             max = Math.floor(max);
+             return Math.floor(Math.random() * (max - min)) + min;
+             }
+
+             var myTestID = getRandomInt(0, 9999999);
+
+             //start test
+             function checkResult() {
+             var xhr = new XMLHttpRequest();
+             xhr.open("GET", 'test4result_' + myTestID);
+             xhr.addEventListener("load", function () {
+             var result = xhr.responseText;
+             console.log("test 4 result: " + result);
+             if (result == 'success1') {
+             result = 'fail (it did not use second push promise)';
+             } else if (result == 'success2') {
+             result = 'success (it used second push promise)'
+             }
+             document.getElementById('test3result').innerHTML = result;
+             });
+             xhr.send();
+             }
+
+             function forcePush() {
+             console.log("test 4 request that should init push, pull: cnt: " + cnt);
+             var xhr = new XMLHttpRequest();
+             xhr.open("GET", 'test4start?id=' + myTestID);
+             xhr.addEventListener("load", function () {
+             setTimeout(function () {
+             if (cnt === 0) {
+             forcePush(++cnt);
+             } else {
+             checkResult();
+             }
+             }, 2000)
+             });
+             xhr.send();
+             }
+
+             console.log("test 4 starting");
+             forcePush(0);
+             })();
+             */
+        </script>
     </div>
 </div>
 

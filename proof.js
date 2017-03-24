@@ -35,6 +35,7 @@ function getDate(){
 
 var testbase = {
     'response': function (request, response) {
+        // TODO, SECURITY BUG IN NOT CHECKING USER DATA AND THEN ECHOING, USE ONLY FOR LOCAL TESTING
         // console.log(request.url);
         if (basePath.indexOf(request.url) > -1) {
             // send result
@@ -139,7 +140,7 @@ var testbase = {
                             'Date:' : date
                         }
                     );
-                    console.log("sent push with date: " + date + " for /test3result_" + testId);
+                    console.log("sent push with date: " + date + " for /test3result_" + testId + " with body: " + body);
                     push.end(body);
 
                     var message = 'sent push promises';
@@ -153,8 +154,8 @@ var testbase = {
                 // SHOULD support "Long Push"
                 default:
                     // test2: interesting firefox behavior
+                    console.log("got unexpected request indicating bug for:" + request.url);
                     if (pathname.indexOf('test2result') > -1 || pathname.indexOf('test3result')) {
-                        console.log("got unexpected request indicating bug for:" + url);
                         var message = 'FAIL / BUG (Ignored PUSH PROMISES!!)';
                         response.writeHead(200, {
                             'Content-Type': 'text/html',
